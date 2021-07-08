@@ -82,7 +82,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'docs')));
   
 app.post('/', (req, res) => {
-    const { hex } = req.body;
+    const { hex } = req.headers.hex;
     setLEDcolor(hex) 
     res.sendStatus(200)
 })
