@@ -87,7 +87,7 @@ app.use(express.static(path.join(__dirname, 'docs')));
   
 app.post('/', (req, res) => {
     const { hex } = req.body;
-
+res.setHeader("Access-Control-Allow-Origin", "10.0.0.219:3344")
     if(hex) {
         if (!setLEDcolor(hex)) {
             res.send(400)
