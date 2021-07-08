@@ -3,8 +3,6 @@ var bluetooth = require("@abandonware/bluetooth-hci-socket")
 
 var characteristic;
 
-var ready = false;
-
 noble.state = "poweredOn";
 
 var serviceUUIDs = []; // default: [] => all
@@ -58,18 +56,13 @@ noble.on("discover", (peripheral) => {
       const testData = "7E070503FFFFFF10EF";
 
       characteristic.write(Buffer.from(testData, "hex"), false);
-
-      ready = true;
     });
   });
 });
 
  function setLEDcolor(hex) {
-  if (!ready) {
-    return false;
-  }
 
-  //console.log(`Writing ${hex}...`);
+  console.log(`Writing ${hex}...`);
 
   const data = `7E070503${hex}10EF`;
 
@@ -91,7 +84,7 @@ app.use(express.static(path.join(__dirname, 'docs')));
 app.post('/', (req, res) => {
     const { hex } = req.body;
     setLEDcolor(hex) 
-    res.send(200)
+    res.sendStatus(200)
 })
     
 app.listen(port, () => {
