@@ -90,15 +90,8 @@ app.use(express.static(path.join(__dirname, 'docs')));
   
 app.post('/', (req, res) => {
     const { hex } = req.body;
-    if(hex) {
-        if (!setLEDcolor(hex)) {
-            res.send(400)
-        } else (
-            res.send(200)
-        )
-    } else (
-        res.send(400)
-    )
+    setLEDcolor(hex) 
+    res.send(200)
 })
     
 app.listen(port, () => {
