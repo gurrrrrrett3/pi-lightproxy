@@ -1,5 +1,5 @@
 var noble = require("@abandonware/noble");
-var bluetooth = require("@abandonware/bluetooth-hci-socket")
+var bluetooth = require("@abandonware/bluetooth-hci-socket");
 
 var characteristic;
 
@@ -60,8 +60,7 @@ noble.on("discover", (peripheral) => {
   });
 });
 
- function setLEDcolor(hex) {
-
+function setLEDcolor(hex) {
   console.log(`Writing ${hex}...`);
 
   const data = `7E070503${hex}10EF`;
@@ -70,26 +69,21 @@ noble.on("discover", (peripheral) => {
   return true;
 }
 
-
 const express = require("express");
 const app = express();
 var path = require("path");
 const port = 3333;
-const bodyParser = require("body-parser") 
+const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
+app.use(express.static(path.join(__dirname, "docs")));
 
-app.use(express.static(path.join(__dirname, 'docs')));
-  
-app.post('/', (req, res) => {
+app.post("/", (req, res) => {
+  const { hex } = req.body;
+  setLEDcolor(hex);
+  res.sendStatus(200);
+});
 
-    console.log(req)
-
-    const { hex }= req.body
-    setLEDcolor(hex) 
-    res.sendStatus(200)
-})
-    
 app.listen(port, () => {
   console.log(`Server ready on localhost:${port}`);
 });
