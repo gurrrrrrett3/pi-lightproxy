@@ -60,15 +60,6 @@ noble.on("discover", (peripheral) => {
   });
 });
 
-function setLEDcolor(hex) {
-  console.log(`Writing ${hex}...`);
-
-  const data = `7E070503${hex}10EF`;
-
-  characteristic.write(Buffer.from(data, "hex"), false);
-  return true;
-}
-
 const express = require("express");
 const app = express();
 var path = require("path");
@@ -84,6 +75,36 @@ app.post("/", (req, res) => {
   res.sendStatus(200);
 });
 
+app.post("/on", (req, res) => {
+  setLightState(true);
+
+  res.sendStatus(200);
+});
+
+app.post("/off", (req, res) => {
+  setLightState(false);
+  res.sendStatus(200);
+});
+
 app.listen(port, () => {
   console.log(`Server ready on localhost:${port}`);
 });
+
+function setLEDcolor(hex) {
+  console.log(`Writing ${hex}...`);
+
+  const data = `7E070503${hex}10EF`;
+
+  characteristic.write(Buffer.from(data, "hex"), false);
+  return true;
+}
+
+function setLightState(state) {
+  if (state) {
+    const data = `7E00040100000000EF`;
+    characteristic.write(Buffer.from(data, "hex"), false);
+  } else {
+    const data = `7E00040000000000EF`;
+    characteristic.write(Buffer.from(data, "hex"), false);
+  }
+}
