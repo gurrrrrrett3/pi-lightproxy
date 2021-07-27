@@ -67,7 +67,13 @@ const port = 3333;
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, "docs")));
+app.use(express.static(path.join(__dirname, "public")));
+
+app.get("/", (req, res) => {
+
+  res.redirect("index.html")
+
+})
 
 app.post("/", (req, res) => {
   const { hex } = req.body;
