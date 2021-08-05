@@ -70,10 +70,8 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
-
-  res.redirect("index.html")
-
-})
+  res.redirect("index.html");
+});
 
 app.post("/", (req, res) => {
   const { hex } = req.body;
