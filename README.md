@@ -5,7 +5,7 @@ A small Raspberry Pi Express server that uses the Pi's bluetooth to control BLE 
 #Endpoints
 ```
 GET  /    | Info about the server
-POST /    | Accepts body data formatted as { hex: FFFFFF} to set LED color
+POST /    | Accepts body data formatted as { hex: FFFFFF } to set LED color
 POST /on  | Enables the lights
 POST /off | Disables the lights
 ```
