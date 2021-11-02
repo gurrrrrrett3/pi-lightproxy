@@ -10,54 +10,54 @@ var serviceUUIDs = []; // default: [] => all
 noble.startScanning(serviceUUIDs, false); // particular UUID's
 
 noble.on("discover", (peripheral) => {
-  if (peripheral.address == "be:89:e0:01:dd:7e") {
-    peripheral.connect();
-    noble.stopScanning();
-    console.log(`Connecting to: ${peripheral.advertisement.localName}`);
-  }
+    if (peripheral.address == "be:89:e0:01:dd:7e") {
+        peripheral.connect();
+        noble.stopScanning();
+        console.log(`Connecting to: ${peripheral.advertisement.localName}`);
+    }
 
-  peripheral.once("connect", () => {
-    console.log(
-      `Connectected to: ${peripheral.advertisement.localName} \nDiscovering Services...`
-    );
-    peripheral.discoverServices();
-  });
-
-  peripheral.once("servicesDiscover", (services) => {
-    console.log('Searching for service: "fff0"');
-
-    services.filter((service) => {
-      if (service.uuid == "fff0") {
-        return true;
-      }
+    peripheral.once("connect", () => {
+        console.log(
+            `Connectected to: ${peripheral.advertisement.localName} \nDiscovering Services...`
+        );
+        peripheral.discoverServices();
     });
 
-    console.log('Found service: "fff0"');
+    peripheral.once("servicesDiscover", (services) => {
+        console.log('Searching for service: "fff0"');
 
-    var service = services[1];
+        services.filter((service) => {
+            if (service.uuid == "fff0") {
+                return true;
+            }
+        });
 
-    service.discoverCharacteristics();
+        console.log('Found service: "fff0"');
 
-    service.once("characteristicsDiscover", (characteristics) => {
-      characteristics.filter((characteristic) => {
-        if (characteristic.uuid == "fff3") {
-          return true;
-        }
-      });
+        var service = services[1];
 
-      console.log("Found Characteristic fff3");
+        service.discoverCharacteristics();
 
-      characteristic = characteristics.find((characteristic) => {
-        return characteristic.properties.includes("writeWithoutResponse");
-      });
+        service.once("characteristicsDiscover", (characteristics) => {
+            characteristics.filter((characteristic) => {
+                if (characteristic.uuid == "fff3") {
+                    return true;
+                }
+            });
 
-      console.log("Writing test data...");
+            console.log("Found Characteristic fff3");
 
-      const testData = "7E070503FFFFFF10EF";
+            characteristic = characteristics.find((characteristic) => {
+                return characteristic.properties.includes("writeWithoutResponse");
+            });
 
-      characteristic.write(Buffer.from(testData, "hex"), false);
+            console.log("Writing test data...");
+
+            setLightState(true)
+            const testData = "7E070503FFFFFF10EF";
+            characteristic.write(Buffer.from(testData, "hex"), false);
+        });
     });
-  });
 });
 
 const express = require("express");
@@ -70,45 +70,41 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
-  res.redirect("index.html");
+    res.redirect("index.html");
 });
 
 app.post("/", (req, res) => {
-  const { hex } = req.body;
-  setLEDcolor(hex);
-  res.sendStatus(200);
+    const { hex } = req.body;
+    setLEDcolor(hex);
+    res.sendStatus(200);
 });
 
 app.post("/on", (req, res) => {
-  setLightState(true);
-
-  res.sendStatus(200);
+    setLightState(true);
+    res.sendStatus(200);
 });
 
 app.post("/off", (req, res) => {
-  setLightState(false);
-  res.sendStatus(200);
+    setLightState(false);
+    res.sendStatus(200);
 });
 
 app.listen(port, () => {
-  console.log(`Server ready on localhost:${port}`);
+    console.log(`Server ready on localhost:${port}`);
 });
 
 function setLEDcolor(hex) {
-  console.log(`Writing ${hex}...`);
-
-  const data = `7E070503${hex}10EF`;
-
-  characteristic.write(Buffer.from(data, "hex"), false);
-  return true;
+    const data = `7E070503${hex}10EF`;
+    characteristic.write(Buffer.from(data, "hex"), false);
+    return true;
 }
 
 function setLightState(state) {
-  if (state) {
-    const data = `7E00040100000000EF`;
-    characteristic.write(Buffer.from(data, "hex"), false);
-  } else {
-    const data = `7E00040000000000EF`;
-    characteristic.write(Buffer.from(data, "hex"), false);
-  }
+    if (state) {
+        const data = `7E00040100000000EF`;
+        characteristic.write(Buffer.from(data, "hex"), false);
+    } else {
+        const data = `7E00040000000000EF`;
+        characteristic.write(Buffer.from(data, "hex"), false);
+    }
 }
