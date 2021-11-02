@@ -4,5 +4,24 @@
     "@abandonware/noble": "^1.9.2-14",
     "body-parser": "^1.19.0",
     "express": "^4.17.1"
-  }
+  },
+  "name": "pi-lightproxy",
+  "description": "A small Raspberry Pi Express server that uses the Pi's bluetooth to control BLE LED Devices",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "sudo node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gurrrrrrett3/pi-lightproxy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gurrrrrrett3/pi-lightproxy/issues"
+  },
+  "homepage": "https://github.com/gurrrrrrett3/pi-lightproxy#readme"
 }
