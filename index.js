@@ -10,7 +10,7 @@ var serviceUUIDs = []; // default: [] => all
 noble.startScanning(serviceUUIDs, false); // particular UUID's
 
 noble.on("discover", (peripheral) => {
-    if (peripheral.address == "be:89:e0:01:dd:7e") {
+    if (peripheral.address == "be:59:c3:00:a2:74") {
         peripheral.connect();
         noble.stopScanning();
         console.log(`Connecting to: ${peripheral.advertisement.localName}`);
