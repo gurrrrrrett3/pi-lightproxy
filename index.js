@@ -63,7 +63,7 @@ noble.on("discover", (peripheral) => {
 const express = require("express");
 const app = express();
 var path = require("path");
-const port = 80;
+const port = 3333;
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
